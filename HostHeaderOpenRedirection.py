@@ -8,8 +8,8 @@ import uuid, datetime, sqlite3, hashlib, random, os, secrets, requests, string, 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-lab_type = ""#OpenRedirection"
-lab_name = ""#HostHeaderOpenRedirectionLab"
+lab_type = "OpenRedirection"
+lab_name = "HostHeaderOpenRedirectionLab"
 
 user_data = {}
 
@@ -438,11 +438,11 @@ def forgot():
 @HostHeaderOpenRedirection.route("/dashboard.html")
 @login_required
 def dashboard():
-    host_url = request.url
+    host_url = request.host_url
     if not check_cookies():
         session.clear()
     if 'user' not in session:
-        return redirect(host_url)
+        return redirect(f"{host_url}login.html?next={host_url}login.html")
 
     return render_template('dashboard.html', user=session.get('user'))
 
@@ -458,11 +458,11 @@ def logout():
 @HostHeaderOpenRedirection.route('/profile.html')
 @login_required
 def profile():
-    host_url=request.url
+    host_url=request.host_url
     if not check_cookies():
         session.clear()
     if 'user' not in session:
-        return redirect(host_url)
+        return redirect(f"{host_url}login.html?next={host_url}login.html")
 
     return render_template('profile.html', user=session.get('user'))
 
